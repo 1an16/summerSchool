@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class RandomSnailMove : MonoBehaviour
 {
-    public float moveSpeed = 2f;                 // 移动速度
-    public Vector2 moveArea = new Vector2(10, 10); // 移动范围
-    public float changeDirectionTime = 2f;       // 换方向时间
+    public float moveSpeed = 2f;
+    public Vector2 moveArea = new Vector2(10, 10);
+    public float changeDirectionTime = 2f;
 
     private Vector2 moveDirection;
     private float timer;
@@ -25,7 +25,7 @@ public class RandomSnailMove : MonoBehaviour
         timer += Time.deltaTime;
 
 
-        // 定时改变方向
+        // 定时随机改变方向
         if (timer >= changeDirectionTime)
         {
             RandomDirection();
@@ -55,7 +55,7 @@ public class RandomSnailMove : MonoBehaviour
 
 
 
-    // 限制移动区域
+    // 边界限制
     void CheckBoundary()
     {
         float minX = startPosition.x - moveArea.x / 2;
@@ -87,20 +87,19 @@ public class RandomSnailMove : MonoBehaviour
 
 
 
-    // ===========================
+    // ==========================
     // 碰撞检测
-    // ===========================
+    // ==========================
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 只有Snail碰到Destory才删除Destory
-        if (CompareTag("Snail") && collision.CompareTag("Destory"))
+        if (collision.CompareTag("Destory"))
         {
-            Destroy(collision.gameObject);
+            Destroy(collision.transform.root.gameObject);
         }
+
+        moveDirection = -moveDirection;
     }
-
-
 
     // 显示移动范围
     private void OnDrawGizmos()
