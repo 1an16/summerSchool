@@ -1,182 +1,247 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-/// <summary>
-/// Controls the flow from the start menu into gameplay.
-/// The menu and the start delay use unscaled time because gameplay is paused.
-/// </summary>
+public enum GamePhase
+{
+    StartMenu,
+    WaitingForRelease,
+    Countdown,
+    Playing,
+    Success,
+    Timeout
+}
+
+/// <summary>Owns the complete game flow. There must be exactly one in the scene.</summary>
 public class StartMenuController : MonoBehaviour
 {
-    [Header("Menu UI")]
-    [Tooltip("Optional. If empty, a Canvas named StartMenuCanvas is found automatically.")]
+    public static StartMenuController Instance { get; private set; }
+
+    [Header("Start Menu")]
     [SerializeField] private Canvas startMenuCanvas;
-    [Tooltip("Optional root panel inside the Canvas. Leave empty to use the Canvas itself.")]
     [SerializeField] private GameObject startMenuRoot;
-    [Tooltip("Optional UI shown during the one-second delay. Do not assign the menu root itself.")]
-    [SerializeField] private GameObject startingRoot;
-    [Tooltip("Optional separate Filled Image used only as the hold progress bar.")]
     [SerializeField] private Image holdProgressFill;
+    [SerializeField, Min(0.1f)] private float menuHoldDuration = 1f;
 
-    [Header("Timing")]
-    [SerializeField, Min(0.1f)] private float holdDuration = 1f;
-    [SerializeField, Min(0f)] private float startDelay = 1f;
+    [Header("Countdown")]
+    [SerializeField] private GameObject countdownRoot;
+    [SerializeField] private TMP_Text countdownText;
+    [SerializeField, Min(1)] private int countdownFrom = 3;
+    [SerializeField, Min(0.1f)] private float countdownStepSeconds = 1f;
 
-    [Header("Gameplay")]
-    [Tooltip("Scripts that must not receive input while the menu is open.")]
-    [SerializeField] private Behaviour[] gameplayBehaviours;
+    [Header("Game Rules")]
+    [SerializeField, Min(1f)] private float gameDuration = 30f;
+    [SerializeField] private GroundBlurController groundBlur;
 
-    private float heldTime;
-    private bool isStarting;
-    private bool warnedAboutProgressImage;
+    [Header("Ending")]
+    [SerializeField] private GameObject successEndingRoot;
+    [SerializeField] private GameObject timeoutEndingRoot;
+    [SerializeField] private Animator endingAnimator;
+    [SerializeField] private string successTrigger = "Success";
+    [SerializeField] private string timeoutTrigger = "Timeout";
+    [SerializeField] private UnityEvent onSuccess;
+    [SerializeField] private UnityEvent onTimeout;
 
-    public float HoldProgress => Mathf.Clamp01(heldTime / holdDuration);
-    public bool GameStarted { get; private set; }
+    private float menuHeldTime;
+    private float remainingTime;
+    private bool transitionStarted;
+    private string fallbackCountdown = string.Empty;
+
+    public GamePhase Phase { get; private set; } = GamePhase.StartMenu;
+    public bool IsPlaying => Phase == GamePhase.Playing;
+    public float RemainingTime => remainingTime;
+    public float GameDuration => gameDuration;
+
+    private GameObject MenuObject => startMenuRoot != null
+        ? startMenuRoot
+        : startMenuCanvas != null ? startMenuCanvas.gameObject : null;
 
     private void Awake()
     {
-        FindStartMenuCanvas();
-
-        Time.timeScale = 0f;
-        SetGameplayEnabled(false);
-
-        GameObject menuObject = GetMenuObject();
-        SetActive(menuObject, true);
-
-        if (startingRoot != menuObject)
+        if (Instance != null && Instance != this)
         {
-            SetActive(startingRoot, false);
+            Debug.LogError("Only one StartMenuController is allowed.", this);
+            enabled = false;
+            return;
         }
 
-        UpdateProgress(0f);
+        Instance = this;
+        FindSceneReferences();
+        Time.timeScale = 0f;
+        Phase = GamePhase.StartMenu;
+        remainingTime = gameDuration;
 
-        if (menuObject == null)
+        SetActive(MenuObject, true);
+        SetActive(countdownRoot, false);
+        SetActive(successEndingRoot, false);
+        SetActive(timeoutEndingRoot, false);
+        SetHoldProgress(0f);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
         {
-            Debug.LogWarning(
-                "StartMenuController: No Canvas was found. Name your menu Canvas 'StartMenuCanvas'.",
-                this);
+            Instance = null;
+            Time.timeScale = 1f;
         }
     }
 
     private void Update()
     {
-        if (isStarting || GameStarted)
+        if (Phase == GamePhase.StartMenu)
+        {
+            UpdateStartMenu();
+        }
+        else if (Phase == GamePhase.Playing)
+        {
+            remainingTime = Mathf.Max(0f, remainingTime - Time.deltaTime);
+            if (remainingTime <= 0f)
+            {
+                EndGame(false);
+            }
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (Phase == GamePhase.Countdown && countdownText == null && !string.IsNullOrEmpty(fallbackCountdown))
+        {
+            DrawCenteredLabel(fallbackCountdown, Mathf.RoundToInt(Screen.height * 0.18f));
+        }
+        else if (Phase == GamePhase.Success && successEndingRoot == null)
+        {
+            DrawCenteredLabel("SUCCESS", Mathf.RoundToInt(Screen.height * 0.1f));
+        }
+        else if (Phase == GamePhase.Timeout && timeoutEndingRoot == null)
+        {
+            DrawCenteredLabel("TIME UP", Mathf.RoundToInt(Screen.height * 0.1f));
+        }
+    }
+
+    public void Object2Destroyed()
+    {
+        if (IsPlaying)
+        {
+            EndGame(true);
+        }
+    }
+
+    private void UpdateStartMenu()
+    {
+        if (transitionStarted)
         {
             return;
         }
 
         if (Input.GetKey(KeyCode.Space))
         {
-            heldTime += Time.unscaledDeltaTime;
-            UpdateProgress(HoldProgress);
-
-            if (heldTime >= holdDuration)
+            menuHeldTime += Time.unscaledDeltaTime;
+            SetHoldProgress(menuHeldTime / menuHoldDuration);
+            if (menuHeldTime >= menuHoldDuration)
             {
-                StartCoroutine(BeginGameAfterDelay());
+                transitionStarted = true;
+                StartCoroutine(StartSequence());
             }
         }
-        else if (heldTime > 0f)
+        else
         {
-            heldTime = 0f;
-            UpdateProgress(0f);
+            menuHeldTime = 0f;
+            SetHoldProgress(0f);
         }
     }
 
-    private IEnumerator BeginGameAfterDelay()
+    private IEnumerator StartSequence()
     {
-        isStarting = true;
-        GameObject menuObject = GetMenuObject();
+        Phase = GamePhase.WaitingForRelease;
+        SetActive(MenuObject, false);
+        SetActive(countdownRoot, true);
 
-        if (startingRoot != null && startingRoot != menuObject)
+        // Consume the Space press used by the menu. Gameplay never sees it.
+        while (Input.GetKey(KeyCode.Space))
         {
-            SetActive(startingRoot, true);
+            yield return null;
         }
 
-        yield return new WaitForSecondsRealtime(startDelay);
+        yield return null;
+        Phase = GamePhase.Countdown;
 
-        SetActive(menuObject, false);
-
-        if (startingRoot != menuObject)
+        for (int value = countdownFrom; value >= 1; value--)
         {
-            SetActive(startingRoot, false);
+            fallbackCountdown = value.ToString();
+            if (countdownText != null)
+            {
+                countdownText.text = fallbackCountdown;
+            }
+
+            yield return new WaitForSecondsRealtime(countdownStepSeconds);
         }
 
-        SetGameplayEnabled(true);
+        if (countdownText != null)
+        {
+            countdownText.text = string.Empty;
+        }
+
+        fallbackCountdown = string.Empty;
+
+        SetActive(countdownRoot, false);
+        remainingTime = gameDuration;
+        groundBlur?.ResetBlur();
         Time.timeScale = 1f;
-        GameStarted = true;
+        Phase = GamePhase.Playing;
     }
 
-    private void SetGameplayEnabled(bool enabled)
+    private void EndGame(bool success)
     {
-        if (gameplayBehaviours == null)
+        Phase = success ? GamePhase.Success : GamePhase.Timeout;
+        Time.timeScale = 0f;
+        SetActive(successEndingRoot, success);
+        SetActive(timeoutEndingRoot, !success);
+
+        if (endingAnimator != null)
         {
-            return;
+            endingAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+            endingAnimator.SetTrigger(success ? successTrigger : timeoutTrigger);
         }
 
-        foreach (Behaviour behaviour in gameplayBehaviours)
+        if (success)
         {
-            if (behaviour != null)
-            {
-                behaviour.enabled = enabled;
-            }
+            onSuccess?.Invoke();
+        }
+        else
+        {
+            onTimeout?.Invoke();
         }
     }
 
-    private void UpdateProgress(float progress)
+    private void FindSceneReferences()
     {
-        if (holdProgressFill != null)
+        if (startMenuCanvas == null && startMenuRoot == null)
         {
-            if (holdProgressFill.type != Image.Type.Filled)
+            Canvas[] canvases = FindObjectsOfType<Canvas>(true);
+            foreach (Canvas canvas in canvases)
             {
-                if (!warnedAboutProgressImage)
+                if (canvas.name == "StartMenuCanvas")
                 {
-                    Debug.LogWarning(
-                        "StartMenuController: Hold Progress Fill must be a separate Image with Image Type set to Filled. " +
-                        "A normal menu/background Image will be left unchanged.",
-                        holdProgressFill);
-                    warnedAboutProgressImage = true;
+                    startMenuCanvas = canvas;
+                    break;
                 }
-
-                return;
-            }
-
-            holdProgressFill.fillAmount = progress;
-        }
-    }
-
-    private GameObject GetMenuObject()
-    {
-        if (startMenuRoot != null)
-        {
-            return startMenuRoot;
-        }
-
-        return startMenuCanvas != null ? startMenuCanvas.gameObject : null;
-    }
-
-    private void FindStartMenuCanvas()
-    {
-        if (startMenuCanvas != null || startMenuRoot != null)
-        {
-            return;
-        }
-
-        Canvas[] canvases = FindObjectsOfType<Canvas>(true);
-        foreach (Canvas canvas in canvases)
-        {
-            if (canvas.gameObject.name == "StartMenuCanvas")
-            {
-                startMenuCanvas = canvas;
-                return;
             }
         }
 
-        if (canvases.Length > 0)
+        if (groundBlur == null)
         {
-            startMenuCanvas = canvases[0];
-            Debug.LogWarning(
-                "StartMenuController: Using the first Canvas found. Rename the intended menu Canvas to 'StartMenuCanvas'.",
-                startMenuCanvas);
+            groundBlur = FindObjectOfType<GroundBlurController>(true);
+        }
+    }
+
+    private void SetHoldProgress(float value)
+    {
+        if (holdProgressFill != null && holdProgressFill.type == Image.Type.Filled)
+        {
+            holdProgressFill.fillAmount = Mathf.Clamp01(value);
         }
     }
 
@@ -186,5 +251,17 @@ public class StartMenuController : MonoBehaviour
         {
             target.SetActive(active);
         }
+    }
+
+    private static void DrawCenteredLabel(string text, int fontSize)
+    {
+        GUIStyle style = new GUIStyle(GUI.skin.label)
+        {
+            alignment = TextAnchor.MiddleCenter,
+            fontSize = Mathf.Max(32, fontSize),
+            fontStyle = FontStyle.Bold
+        };
+        style.normal.textColor = Color.white;
+        GUI.Label(new Rect(0f, 0f, Screen.width, Screen.height), text, style);
     }
 }

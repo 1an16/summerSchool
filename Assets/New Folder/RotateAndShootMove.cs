@@ -1,167 +1,123 @@
 using UnityEngine;
 
+/// <summary>Object1: hold Space to choose an angle, release to launch.</summary>
 public class RotateShootReturn2D : MonoBehaviour
 {
-    public float rotateSpeed = 120f;
-    public float moveSpeed = 8f;
-    public float moveDistance = 5f;
-    public float returnSpeed = 10f;
+    [Header("Aiming")]
+    [SerializeField] private float rotateSpeed = 130f;
+    [SerializeField] private float minimumAngle = -90f;
+    [SerializeField] private float maximumAngle = 90f;
+
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 20f;
+    [SerializeField] private float moveDistance = 15f;
+    [SerializeField] private float returnSpeed = 50f;
 
     private Vector3 startPosition;
     private Vector3 targetPosition;
-
-    private bool rotating = true;
-    private bool moving = false;
-    private bool returning = false;
-
-    private float currentAngle = 0f;
+    private float currentAngle;
     private bool clockwise = true;
+    private bool aiming;
+    private bool moving;
+    private bool returning;
 
-
-    void Start()
+    private void Awake()
     {
         startPosition = transform.position;
     }
 
-
-    void Update()
+    private void Update()
     {
-        // 旋转阶段
-        if (rotating)
+        if (StartMenuController.Instance == null || !StartMenuController.Instance.IsPlaying)
         {
-            RotateFront();
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                StartMove();
-            }
+            return;
         }
 
-
-        // 向尖头方向移动
-        if (moving)
+        if (!moving && !returning)
+        {
+            UpdateAimInput();
+        }
+        else if (moving)
         {
             transform.position = Vector3.MoveTowards(
-                transform.position,
-                targetPosition,
-                moveSpeed * Time.deltaTime
-            );
-
-
+                transform.position, targetPosition, moveSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, targetPosition) < 0.05f)
             {
-                StartReturn();
+                moving = false;
+                returning = true;
             }
         }
-
-
-        // 返回
-        if (returning)
+        else
         {
             transform.position = Vector3.MoveTowards(
-                transform.position,
-                startPosition,
-                returnSpeed * Time.deltaTime
-            );
-
-
+                transform.position, startPosition, returnSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, startPosition) < 0.05f)
             {
-                transform.position = startPosition;
-
-                returning = false;
-                rotating = true;
+                ResetAtStart();
             }
         }
     }
 
-
-
-    // 前方180度旋转
-    void RotateFront()
+    private void UpdateAimInput()
     {
-        if (clockwise)
-            currentAngle += rotateSpeed * Time.deltaTime;
-        else
-            currentAngle -= rotateSpeed * Time.deltaTime;
-
-
-        if (currentAngle >= 90f)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            currentAngle = 90f;
-            clockwise = false;
+            aiming = true;
         }
 
-
-        if (currentAngle <= -90f)
+        if (aiming && Input.GetKey(KeyCode.Space))
         {
-            currentAngle = -90f;
-            clockwise = true;
+            currentAngle += (clockwise ? 1f : -1f) * rotateSpeed * Time.deltaTime;
+            if (currentAngle >= maximumAngle)
+            {
+                currentAngle = maximumAngle;
+                clockwise = false;
+            }
+            else if (currentAngle <= minimumAngle)
+            {
+                currentAngle = minimumAngle;
+                clockwise = true;
+            }
+
+            transform.localRotation = Quaternion.Euler(0f, 0f, currentAngle);
         }
 
-
-        transform.localRotation =
-            Quaternion.Euler(0, 0, currentAngle);
+        if (aiming && Input.GetKeyUp(KeyCode.Space))
+        {
+            aiming = false;
+            moving = true;
+            targetPosition = transform.position + transform.up * moveDistance;
+        }
     }
 
-
-
-    // 开始移动
-    void StartMove()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        rotating = false;
-        moving = true;
+        if (!moving || StartMenuController.Instance == null || !StartMenuController.Instance.IsPlaying)
+        {
+            return;
+        }
 
+        RandomSnailMove object2 = other.GetComponentInParent<RandomSnailMove>();
+        if (object2 != null)
+        {
+            object2.DestroyByObject1();
+            ResetAtStart();
+            return;
+        }
 
-        targetPosition =
-            transform.position +
-            transform.up * moveDistance;
+        Object3Target object3 = other.GetComponentInParent<Object3Target>();
+        if (object3 != null)
+        {
+            object3.RegisterHit(this);
+            ResetAtStart();
+        }
     }
 
-
-
-    // 开始返回
-    void StartReturn()
+    private void ResetAtStart()
     {
+        transform.position = startPosition;
+        aiming = false;
         moving = false;
-        returning = true;
+        returning = false;
     }
-
-
-
-    // ==========================
-    // 碰撞检测
-    // ==========================
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (moving)
-        {
-            // 击中普通Destroy物体
-            if (collision.CompareTag("Destory"))
-            {
-             
-            }
-
-
-            // 击中蜗牛
-            if (collision.CompareTag("Snail"))
-            {
-                RandomSnailMove snail = collision.GetComponent<RandomSnailMove>();
-
-                if (snail != null)
-                {
-                    snail.TakeDamage();
-                }
-            }
-
-
-            // 指针返回
-            transform.position = startPosition;
-        }
-            moving = false;
-            returning = false;
-            rotating = true;
-        }
-    }
-    
+}

@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 660284241}
   - component: {fileID: 660284243}
   m_Layer: 0
-  m_Name: Square (1)
+  m_Name: Object3 (1)
   m_TagString: Destory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -481,13 +481,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 660284239}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8f0f265e169534e8b322c9a9eca026, type: 3}
+  m_Script: {fileID: 11500000, guid: 883e9e6db6a89874e93bd71e9dc21f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitCount: 3
-  currentHit: 0
-  hitCooldown: 0.5
-  canHit: 1
+  hitsToBreak: 2
+  hitCooldown: 0.15
+  spriteRenderer: {fileID: 0}
+  untouchedSprite: {fileID: 0}
+  damagedSprite: {fileID: 0}
+  brokenSprite: {fileID: 0}
+  animator: {fileID: 0}
+  hitTrigger: Hit
+  breakTrigger: Break
+  destroyDelay: 0
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &821831985
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +514,7 @@ GameObject:
   - component: {fileID: 821831989}
   - component: {fileID: 821831990}
   m_Layer: 0
-  m_Name: Triangle
+  m_Name: Object1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -536,6 +548,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 130
+  minimumAngle: -90
+  maximumAngle: 90
   moveSpeed: 20
   moveDistance: 15
   returnSpeed: 50
@@ -677,7 +691,7 @@ GameObject:
   - component: {fileID: 914639806}
   - component: {fileID: 914639807}
   m_Layer: 0
-  m_Name: Triangle (2)
+  m_Name: Object2
   m_TagString: Destory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -763,8 +777,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
-  moveArea: {x: 27.2, y: 7.47}
-  changeDirectionTime: 2
+  targetReachDistance: 0.15
+  polygonOffset: {x: 0, y: 0}
+  movementPolygon:
+  - {x: -12.7, y: -2.85}
+  - {x: 13.4, y: -2.9}
+  - {x: 13.35, y: -0.07}
+  - {x: 7.59, y: 3.35}
+  - {x: -6, y: 3.28}
+  - {x: -12.8, y: 0.48}
 --- !u!61 &914639806
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -850,7 +871,7 @@ GameObject:
   - component: {fileID: 949157299}
   - component: {fileID: 949157301}
   m_Layer: 0
-  m_Name: Square (3)
+  m_Name: Object3 (3)
   m_TagString: Destory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -977,13 +998,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 949157297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8f0f265e169534e8b322c9a9eca026, type: 3}
+  m_Script: {fileID: 11500000, guid: 883e9e6db6a89874e93bd71e9dc21f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitCount: 3
-  currentHit: 0
-  hitCooldown: 0.5
-  canHit: 1
+  hitsToBreak: 2
+  hitCooldown: 0.15
+  spriteRenderer: {fileID: 0}
+  untouchedSprite: {fileID: 0}
+  damagedSprite: {fileID: 0}
+  brokenSprite: {fileID: 0}
+  animator: {fileID: 0}
+  hitTrigger: Hit
+  breakTrigger: Break
+  destroyDelay: 0
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &952299298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,7 +1098,7 @@ GameObject:
   - component: {fileID: 1020948290}
   - component: {fileID: 1020948292}
   m_Layer: 0
-  m_Name: Square (2)
+  m_Name: Object3 (2)
   m_TagString: Destory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1192,13 +1225,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1020948288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8f0f265e169534e8b322c9a9eca026, type: 3}
+  m_Script: {fileID: 11500000, guid: 883e9e6db6a89874e93bd71e9dc21f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitCount: 3
-  currentHit: 0
-  hitCooldown: 0.5
-  canHit: 1
+  hitsToBreak: 2
+  hitCooldown: 0.15
+  spriteRenderer: {fileID: 0}
+  untouchedSprite: {fileID: 0}
+  damagedSprite: {fileID: 0}
+  brokenSprite: {fileID: 0}
+  animator: {fileID: 0}
+  hitTrigger: Hit
+  breakTrigger: Break
+  destroyDelay: 0
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1021014887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,7 +1255,7 @@ GameObject:
   - component: {fileID: 1021014888}
   - component: {fileID: 1021014889}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1248,12 +1293,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMenuCanvas: {fileID: 1097970802}
   startMenuRoot: {fileID: 0}
-  startingRoot: {fileID: 0}
   holdProgressFill: {fileID: 0}
-  holdDuration: 1
-  startDelay: 1
-  gameplayBehaviours:
-  - {fileID: 821831987}
+  menuHoldDuration: 1
+  countdownRoot: {fileID: 0}
+  countdownText: {fileID: 0}
+  countdownFrom: 3
+  countdownStepSeconds: 1
+  gameDuration: 30
+  groundBlur: {fileID: 1650288747}
+  successEndingRoot: {fileID: 0}
+  timeoutEndingRoot: {fileID: 0}
+  endingAnimator: {fileID: 0}
+  successTrigger: Success
+  timeoutTrigger: Timeout
+  onSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  onTimeout:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1097970799
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,7 +1388,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -1373,7 +1431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1309921394
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1413,8 +1471,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1441,8 +1499,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1650288746}
   - component: {fileID: 1650288745}
+  - component: {fileID: 1650288747}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1515,6 +1574,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1021014888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1650288747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650288744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731a216b13bf4c568bd32cf9127db442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundRenderers:
+  - {fileID: 1650288745}
+  intervalSeconds: 5
+  blurPerStep: 0.15
+  blurProperty: _BlurAmount
+  minimumFallbackBrightness: 0.7
 --- !u!1 &1933693572
 GameObject:
   m_ObjectHideFlags: 0
@@ -1528,7 +1605,7 @@ GameObject:
   - component: {fileID: 1933693574}
   - component: {fileID: 1933693576}
   m_Layer: 0
-  m_Name: Square (5)
+  m_Name: Object3 (5)
   m_TagString: Destory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1655,13 +1732,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1933693572}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8f0f265e169534e8b322c9a9eca026, type: 3}
+  m_Script: {fileID: 11500000, guid: 883e9e6db6a89874e93bd71e9dc21f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitCount: 3
-  currentHit: 0
-  hitCooldown: 0.5
-  canHit: 1
+  hitsToBreak: 2
+  hitCooldown: 0.15
+  spriteRenderer: {fileID: 0}
+  untouchedSprite: {fileID: 0}
+  damagedSprite: {fileID: 0}
+  brokenSprite: {fileID: 0}
+  animator: {fileID: 0}
+  hitTrigger: Hit
+  breakTrigger: Break
+  destroyDelay: 0
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2042351668
 GameObject:
   m_ObjectHideFlags: 0
@@ -1675,7 +1764,7 @@ GameObject:
   - component: {fileID: 2042351670}
   - component: {fileID: 2042351672}
   m_Layer: 0
-  m_Name: Square (4)
+  m_Name: Object3 (4)
   m_TagString: Destory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1802,13 +1891,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2042351668}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c8f0f265e169534e8b322c9a9eca026, type: 3}
+  m_Script: {fileID: 11500000, guid: 883e9e6db6a89874e93bd71e9dc21f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitCount: 3
-  currentHit: 0
-  hitCooldown: 0.5
-  canHit: 1
+  hitsToBreak: 2
+  hitCooldown: 0.15
+  spriteRenderer: {fileID: 0}
+  untouchedSprite: {fileID: 0}
+  damagedSprite: {fileID: 0}
+  brokenSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  animator: {fileID: 0}
+  hitTrigger: Hit
+  breakTrigger: Break
+  destroyDelay: 0
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
+  onBroken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

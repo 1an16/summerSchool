@@ -1,170 +1,153 @@
 using UnityEngine;
 
+/// <summary>Object2: the single moving target, constrained to an editable polygon.</summary>
 public class RandomSnailMove : MonoBehaviour
 {
-    public float moveSpeed = 2f;       // 正常移动速度
-    public float hitSpeed = 5f;        // 被击中后的速度
-    public int health = 2;             // 蜗牛血量
-
-    public Vector2 moveArea = new Vector2(10, 10);
-    public float changeDirectionTime = 2f;
-
-
-    private Vector2 moveDirection;
-    private float timer;
-
-    private Vector2 startPosition;
-
-
-
-    void Start()
+    [SerializeField, Min(0f)] private float moveSpeed = 8f;
+    [SerializeField, Min(0.05f)] private float targetReachDistance = 0.15f;
+    [SerializeField] private Vector2 polygonOffset;
+    [SerializeField] private Vector2[] movementPolygon =
     {
-        startPosition = transform.position;
+        new Vector2(-13.6f, -3.7f),
+        new Vector2(13.6f, -3.7f),
+        new Vector2(13.6f, 3.7f),
+        new Vector2(-13.6f, 3.7f)
+    };
 
-        RandomDirection();
+    private Vector2 initialPosition;
+    private Vector2 targetPosition;
+    private bool hasTarget;
+    private bool destroyed;
+
+    private void Awake()
+    {
+        initialPosition = transform.position;
+        ChooseTarget();
     }
 
-
-
-    void Update()
+    private void Update()
     {
-        timer += Time.deltaTime;
-
-
-        // 定时改变方向
-        if (timer >= changeDirectionTime)
+        if (destroyed || StartMenuController.Instance == null || !StartMenuController.Instance.IsPlaying)
         {
-            RandomDirection();
-            timer = 0;
+            return;
         }
 
-
-        // 移动
-        transform.position +=
-            (Vector3)(moveDirection * moveSpeed * Time.deltaTime);
-
-
-        CheckBoundary();
-    }
-
-
-
-
-    // ==========================
-    // 随机方向
-    // ==========================
-
-    void RandomDirection()
-    {
-        float x = Random.Range(-1f, 1f);
-        float y = Random.Range(-1f, 1f);
-
-        moveDirection = new Vector2(x, y).normalized;
-    }
-
-
-
-
-    // ==========================
-    // 限制移动范围
-    // ==========================
-
-    void CheckBoundary()
-    {
-        float minX = startPosition.x - moveArea.x / 2;
-        float maxX = startPosition.x + moveArea.x / 2;
-
-        float minY = startPosition.y - moveArea.y / 2;
-        float maxY = startPosition.y + moveArea.y / 2;
-
-
-        Vector3 pos = transform.position;
-
-
-        if (pos.x < minX || pos.x > maxX)
+        if (!hasTarget || Vector2.Distance(transform.position, targetPosition) <= targetReachDistance)
         {
-            moveDirection.x *= -1;
-
-            pos.x = Mathf.Clamp(pos.x, minX, maxX);
+            ChooseTarget();
         }
 
-
-        if (pos.y < minY || pos.y > maxY)
-        {
-            moveDirection.y *= -1;
-
-            pos.y = Mathf.Clamp(pos.y, minY, maxY);
-        }
-
-
-        transform.position = pos;
+        transform.position = Vector2.MoveTowards(
+            transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
 
-
-
-
-    // ==========================
-    // 被指针击中
-    // ==========================
-
-    public void TakeDamage()
+    public void DestroyByObject1()
     {
-        health--;
-
-
-        // 被击中后速度改变
-        moveSpeed = hitSpeed;
-
-
-        // 反弹
-        moveDirection = -moveDirection;
-
-
-
-        // 血量没了删除
-        if (health <= 0)
+        if (destroyed)
         {
-            Destroy(gameObject);
+            return;
+        }
+
+        destroyed = true;
+        StartMenuController.Instance?.Object2Destroyed();
+        gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (destroyed || StartMenuController.Instance == null || !StartMenuController.Instance.IsPlaying)
+        {
+            return;
+        }
+
+        Object3Target object3 = other.GetComponentInParent<Object3Target>();
+        if (object3 != null)
+        {
+            object3.RegisterHit(this);
+            ChooseTarget();
         }
     }
 
-
-
-
-
-    // ==========================
-    // 蜗牛碰撞其他Trigger
-    // ==========================
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        // 删除Destroy物体
-        if (collision.CompareTag("Destory"))
+        if (destroyed || StartMenuController.Instance == null || !StartMenuController.Instance.IsPlaying)
         {
-            Destroy(collision.gameObject);
+            return;
         }
 
-
-        // 反弹
-        moveDirection = -moveDirection;
+        Object3Target object3 = collision.collider.GetComponentInParent<Object3Target>();
+        if (object3 != null)
+        {
+            object3.RegisterHit(this);
+            ChooseTarget();
+        }
     }
 
-
-
-
-
-    // ==========================
-    // 显示移动范围
-    // ==========================
-
-    private void OnDrawGizmos()
+    private void ChooseTarget()
     {
+        if (movementPolygon == null || movementPolygon.Length < 3)
+        {
+            targetPosition = initialPosition;
+            hasTarget = true;
+            return;
+        }
+
+        Vector2 min = movementPolygon[0];
+        Vector2 max = movementPolygon[0];
+        for (int i = 1; i < movementPolygon.Length; i++)
+        {
+            min = Vector2.Min(min, movementPolygon[i]);
+            max = Vector2.Max(max, movementPolygon[i]);
+        }
+
+        for (int attempt = 0; attempt < 50; attempt++)
+        {
+            Vector2 localPoint = new Vector2(
+                Random.Range(min.x, max.x), Random.Range(min.y, max.y));
+            if (IsInsidePolygon(localPoint))
+            {
+                targetPosition = initialPosition + polygonOffset + localPoint;
+                hasTarget = true;
+                return;
+            }
+        }
+
+        targetPosition = initialPosition + polygonOffset;
+        hasTarget = true;
+    }
+
+    private bool IsInsidePolygon(Vector2 point)
+    {
+        bool inside = false;
+        for (int i = 0, j = movementPolygon.Length - 1; i < movementPolygon.Length; j = i++)
+        {
+            Vector2 a = movementPolygon[i];
+            Vector2 b = movementPolygon[j];
+            if ((a.y > point.y) != (b.y > point.y) &&
+                point.x < (b.x - a.x) * (point.y - a.y) / (b.y - a.y) + a.x)
+            {
+                inside = !inside;
+            }
+        }
+
+        return inside;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (movementPolygon == null || movementPolygon.Length < 2)
+        {
+            return;
+        }
+
+        Vector2 origin = Application.isPlaying ? initialPosition : (Vector2)transform.position;
+        origin += polygonOffset;
         Gizmos.color = Color.green;
-
-
-        Gizmos.DrawWireCube(
-            Application.isPlaying ? startPosition : transform.position,
-            moveArea
-        );
+        for (int i = 0; i < movementPolygon.Length; i++)
+        {
+            Vector2 a = origin + movementPolygon[i];
+            Vector2 b = origin + movementPolygon[(i + 1) % movementPolygon.Length];
+            Gizmos.DrawLine(a, b);
+        }
     }
 }
