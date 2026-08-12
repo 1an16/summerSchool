@@ -135,10 +135,18 @@ public class RotateShootReturn2D : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // 移动状态碰到BoxCollider返回
-        if (moving)
+        if (moving && collision.CompareTag("Destory"))
         {
-            StartReturn();
+            // 销毁碰到的目标
+            Destroy(collision.gameObject);
+
+            // 立刻回到起点
+            transform.position = startPosition;
+
+            // 重置状态
+            moving = false;
+            returning = false;
+            rotating = true;
         }
     }
 }
