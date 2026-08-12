@@ -135,18 +135,33 @@ public class RotateShootReturn2D : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (moving && (collision.CompareTag("Destory") || collision.CompareTag("Snail")))
+        if (moving)
         {
-            // 销毁碰到的目标
-            Destroy(collision.gameObject);
+            // 击中普通Destroy物体
+            if (collision.CompareTag("Destory"))
+            {
+             
+            }
 
-            // 立刻回到起点
+
+            // 击中蜗牛
+            if (collision.CompareTag("Snail"))
+            {
+                RandomSnailMove snail = collision.GetComponent<RandomSnailMove>();
+
+                if (snail != null)
+                {
+                    snail.TakeDamage();
+                }
+            }
+
+
+            // 指针返回
             transform.position = startPosition;
-
-            // 重置状态
+        }
             moving = false;
             returning = false;
             rotating = true;
         }
     }
-}
+    
