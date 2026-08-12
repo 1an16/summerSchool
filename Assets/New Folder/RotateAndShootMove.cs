@@ -31,7 +31,7 @@ public class RotateShootReturn2D : MonoBehaviour
         {
             RotateFront();
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.JoystickButton1))
             {
                 StartMove();
             }
@@ -135,7 +135,7 @@ public class RotateShootReturn2D : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (moving && collision.CompareTag("Destory"))
+        if (moving && (collision.CompareTag("Destory") || collision.CompareTag("Snail")))
         {
             // 销毁碰到的目标
             Destroy(collision.gameObject);
