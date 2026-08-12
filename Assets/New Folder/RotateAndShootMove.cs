@@ -31,7 +31,7 @@ public class RotateShootReturn2D : MonoBehaviour
         {
             RotateFront();
 
-            if (Input.GetKeyDown(KeyCode.JoystickButton1))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 StartMove();
             }
