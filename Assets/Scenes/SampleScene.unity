@@ -690,6 +690,7 @@ GameObject:
   - component: {fileID: 914639805}
   - component: {fileID: 914639806}
   - component: {fileID: 914639807}
+  - component: {fileID: 914639808}
   m_Layer: 0
   m_Name: Object2
   m_TagString: Snail
@@ -752,7 +753,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 50
   m_Sprite: {fileID: 21300000, guid: daaacb3715f0b9349b4d8dc0c2af1c64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -851,6 +852,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &914639808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914639802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b8fdb1f84442c390e21bdb139c3354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireSprite: {fileID: 21300000, guid: f4db39f69af9b12429075a8b7924bbef, type: 3}
+  fireColor: {r: 1, g: 1, b: 1, a: 1}
+  sortingOrder: 40
+  width: 0.45
+  minimumLength: 0.45
+  maximumLength: 1.15
+  distanceBehindObject: 0.35
+  lengthResponse: 10
+  pulseAmount: 0.27
+  pulseSpeed: 6
+  directionSmoothness: 14
 --- !u!1 &949157297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,7 +1312,7 @@ MonoBehaviour:
   startMenuRoot: {fileID: 0}
   holdProgressFill: {fileID: 0}
   menuHoldDuration: 1
-  controlKey: 331
+  controlKey: 32
   countdownRoot: {fileID: 0}
   countdownText: {fileID: 0}
   countdownFrom: 3
