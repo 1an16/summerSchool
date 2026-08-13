@@ -38,6 +38,10 @@ public class StartMenuController : MonoBehaviour
     [SerializeField, Min(1f)] private float gameDuration = 30f;
     [SerializeField] private GroundBlurController groundBlur;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource bgmSource;
+    [SerializeField] private AudioSource successSoundSource;
+
     [Header("Ending")]
     [SerializeField] private GameObject successEndingRoot;
     [SerializeField] private GameObject timeoutEndingRoot;
@@ -208,12 +212,24 @@ public class StartMenuController : MonoBehaviour
         groundBlur?.ResetBlur();
         Time.timeScale = 1f;
         Phase = GamePhase.Playing;
+        if (bgmSource != null)
+        {
+            bgmSource.Play();
+        }
     }
 
     private void EndGame(bool success)
     {
         Phase = success ? GamePhase.Success : GamePhase.Timeout;
         Time.timeScale = 0f;
+        if (bgmSource != null && bgmSource.isPlaying)
+        {
+            bgmSource.Stop();
+        }
+        if (success && successSoundSource != null)
+        {
+            successSoundSource.Play();
+        }
         SetActive(successEndingRoot, success);
         SetActive(timeoutEndingRoot, !success);
 
