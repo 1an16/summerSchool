@@ -553,7 +553,6 @@ MonoBehaviour:
   moveSpeed: 40
   moveDistance: 15
   returnSpeed: 50
-  controlKey: 32
 --- !u!212 &821831988
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -777,7 +776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c8a5cd99749634e8f1a5ab979c3d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 16
+  moveSpeed: 20
   targetReachDistance: 0.15
   movementArea: {fileID: 2100000002}
 --- !u!61 &914639806
@@ -2426,8 +2425,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16e683776d2943c6bc24faafab92a702, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   vertices:
   - {x: -13.51, y: -4.92}
   - {x: 12.89, y: -5.15}
