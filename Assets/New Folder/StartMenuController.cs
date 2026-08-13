@@ -136,7 +136,7 @@ public class StartMenuController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.JoystickButton1))
         {
             menuHeldTime += Time.unscaledDeltaTime;
             SetHoldProgress(menuHeldTime / menuHoldDuration);

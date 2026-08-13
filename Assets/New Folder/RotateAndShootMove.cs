@@ -60,12 +60,12 @@ public class RotateShootReturn2D : MonoBehaviour
 
     private void UpdateAimInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.JoystickButton1))
         {
             aiming = true;
         }
 
-        if (aiming && Input.GetKey(KeyCode.Space))
+        if (aiming && Input.GetKey(KeyCode.JoystickButton1))
         {
             currentAngle += (clockwise ? 1f : -1f) * rotateSpeed * Time.deltaTime;
             if (currentAngle >= maximumAngle)
@@ -82,7 +82,7 @@ public class RotateShootReturn2D : MonoBehaviour
             transform.localRotation = Quaternion.Euler(0f, 0f, currentAngle);
         }
 
-        if (aiming && Input.GetKeyUp(KeyCode.Space))
+        if (aiming && Input.GetKeyUp(KeyCode.JoystickButton1))
         {
             aiming = false;
             moving = true;
