@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>Object1: hold Space to choose an angle, release to launch.</summary>
@@ -12,7 +13,6 @@ public class RotateShootReturn2D : MonoBehaviour
     [SerializeField] private float moveSpeed = 20f;
     [SerializeField] private float moveDistance = 15f;
     [SerializeField] private float returnSpeed = 50f;
-
     private Vector3 startPosition;
     private Vector3 targetPosition;
     private float currentAngle;
@@ -20,6 +20,11 @@ public class RotateShootReturn2D : MonoBehaviour
     private bool aiming;
     private bool moving;
     private bool returning;
+    private readonly HashSet<int> hitObject3ThisShot = new HashSet<int>();
+
+    private KeyCode ControlKey => StartMenuController.Instance != null
+        ? StartMenuController.Instance.ControlKey
+        : KeyCode.Space;
 
     private void Awake()
     {
@@ -60,12 +65,12 @@ public class RotateShootReturn2D : MonoBehaviour
 
     private void UpdateAimInput()
     {
-        if (Input.GetKeyDown(KeyCode.JoystickButton1))
+        if (Input.GetKeyDown(ControlKey))
         {
             aiming = true;
         }
 
-        if (aiming && Input.GetKey(KeyCode.JoystickButton1))
+        if (aiming && Input.GetKey(ControlKey))
         {
             currentAngle += (clockwise ? 1f : -1f) * rotateSpeed * Time.deltaTime;
             if (currentAngle >= maximumAngle)
@@ -82,17 +87,18 @@ public class RotateShootReturn2D : MonoBehaviour
             transform.localRotation = Quaternion.Euler(0f, 0f, currentAngle);
         }
 
-        if (aiming && Input.GetKeyUp(KeyCode.JoystickButton1))
+        if (aiming && Input.GetKeyUp(ControlKey))
         {
             aiming = false;
             moving = true;
+            hitObject3ThisShot.Clear();
             targetPosition = transform.position + transform.up * moveDistance;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!moving || StartMenuController.Instance == null || !StartMenuController.Instance.IsPlaying)
+        if ((!moving && !returning) || StartMenuController.Instance == null || !StartMenuController.Instance.IsPlaying)
         {
             return;
         }
@@ -106,10 +112,9 @@ public class RotateShootReturn2D : MonoBehaviour
         }
 
         Object3Target object3 = other.GetComponentInParent<Object3Target>();
-        if (object3 != null)
+        if (object3 != null && hitObject3ThisShot.Add(object3.GetInstanceID()))
         {
             object3.RegisterHit(this);
-            ResetAtStart();
         }
     }
 

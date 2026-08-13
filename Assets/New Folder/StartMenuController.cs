@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum GamePhase
@@ -24,6 +25,8 @@ public class StartMenuController : MonoBehaviour
     [SerializeField] private GameObject startMenuRoot;
     [SerializeField] private Image holdProgressFill;
     [SerializeField, Min(0.1f)] private float menuHoldDuration = 1f;
+    [Header("Input")]
+    public KeyCode controlKey = KeyCode.Space;
 
     [Header("Countdown")]
     [SerializeField] private GameObject countdownRoot;
@@ -44,6 +47,10 @@ public class StartMenuController : MonoBehaviour
     [SerializeField] private UnityEvent onSuccess;
     [SerializeField] private UnityEvent onTimeout;
 
+    [Header("Level Flow")]
+    [SerializeField] private bool startMenuOnlyOnFirstLevel = true;
+    [SerializeField, Min(0f)] private float nextLevelDelay = 2f;
+
     private float menuHeldTime;
     private float remainingTime;
     private bool transitionStarted;
@@ -53,6 +60,7 @@ public class StartMenuController : MonoBehaviour
     public bool IsPlaying => Phase == GamePhase.Playing;
     public float RemainingTime => remainingTime;
     public float GameDuration => gameDuration;
+    public KeyCode ControlKey => controlKey;
 
     private GameObject MenuObject => startMenuRoot != null
         ? startMenuRoot
@@ -70,14 +78,23 @@ public class StartMenuController : MonoBehaviour
         Instance = this;
         FindSceneReferences();
         Time.timeScale = 0f;
-        Phase = GamePhase.StartMenu;
         remainingTime = gameDuration;
-
-        SetActive(MenuObject, true);
         SetActive(countdownRoot, false);
         SetActive(successEndingRoot, false);
         SetActive(timeoutEndingRoot, false);
         SetHoldProgress(0f);
+
+        bool showStartMenu = !startMenuOnlyOnFirstLevel || SceneManager.GetActiveScene().buildIndex == 0;
+        SetActive(MenuObject, showStartMenu);
+        if (showStartMenu)
+        {
+            Phase = GamePhase.StartMenu;
+        }
+        else
+        {
+            transitionStarted = true;
+            StartCoroutine(StartSequence());
+        }
     }
 
     private void OnDestroy()
@@ -136,7 +153,7 @@ public class StartMenuController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.JoystickButton1))
+        if (Input.GetKey(controlKey))
         {
             menuHeldTime += Time.unscaledDeltaTime;
             SetHoldProgress(menuHeldTime / menuHoldDuration);
@@ -160,7 +177,7 @@ public class StartMenuController : MonoBehaviour
         SetActive(countdownRoot, true);
 
         // Consume the Space press used by the menu. Gameplay never sees it.
-        while (Input.GetKey(KeyCode.Space))
+        while (Input.GetKey(controlKey))
         {
             yield return null;
         }
@@ -209,11 +226,25 @@ public class StartMenuController : MonoBehaviour
         if (success)
         {
             onSuccess?.Invoke();
+            StartCoroutine(LoadNextLevelAfterDelay());
         }
         else
         {
             onTimeout?.Invoke();
         }
+    }
+
+    private IEnumerator LoadNextLevelAfterDelay()
+    {
+        int nextBuildIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        if (nextBuildIndex >= SceneManager.sceneCountInBuildSettings)
+        {
+            yield break;
+        }
+
+        yield return new WaitForSecondsRealtime(nextLevelDelay);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(nextBuildIndex);
     }
 
     private void FindSceneReferences()
