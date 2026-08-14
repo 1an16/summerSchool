@@ -106,7 +106,7 @@ public class RotateShootReturn2D : MonoBehaviour
         RandomSnailMove object2 = other.GetComponentInParent<RandomSnailMove>();
         if (object2 != null)
         {
-           // object2.DestroyByObject1();
+           object2.DestroyByObject1();
             ResetAtStart();
             return;
         }
