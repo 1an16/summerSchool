@@ -103,12 +103,15 @@ public class RotateShootReturn2D : MonoBehaviour
             return;
         }
 
-        RandomSnailMove object2 = other.GetComponentInParent<RandomSnailMove>();
-        if (object2 != null)
+        if (moving)
         {
-           // object2.DestroyByObject1();
-            ResetAtStart();
-            return;
+            RandomSnailMove object2 = other.GetComponentInParent<RandomSnailMove>();
+            if (object2 != null)
+            {
+                object2.DestroyByObject1();
+                ResetAtStart();
+                return;
+            }
         }
 
         Object3Target object3 = other.GetComponentInParent<Object3Target>();
