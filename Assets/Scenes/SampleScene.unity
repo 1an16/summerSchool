@@ -890,7 +890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b8fdb1f84442c390e21bdb139c3354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireSprite: {fileID: 21300000, guid: f4db39f69af9b12429075a8b7924bbef, type: 3}
+  fireSprite: {fileID: 0}
   fireColor: {r: 1, g: 1, b: 1, a: 1}
   sortingOrder: 40
   width: 0.45
