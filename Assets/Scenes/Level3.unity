@@ -169,6 +169,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!61 &91492027
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -528,13 +532,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 821831985}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.15770514, y: -0, z: -0, w: 0.9874863}
   m_LocalPosition: {x: 0, y: -3.97, z: 0}
-  m_LocalScale: {x: 0.37, y: 1.184, z: 0.37}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1021014888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -18.147, y: 0, z: 0}
 --- !u!114 &821831987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,10 +551,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e128fd3c73b824ebabe489a96f8c42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 130
+  rotateSpeed: 150
   minimumAngle: -90
   maximumAngle: 90
-  moveSpeed: 40
+  moveSpeed: 50
   moveDistance: 15
   returnSpeed: 50
 --- !u!212 &821831988
@@ -594,8 +598,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 99
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 0.37130296, g: 1, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 3bf82ba678e5116458e2c1fe03bcab22, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -640,8 +644,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.21133333}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 23.603092, y: 16.4}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -706,13 +710,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 914639802}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.44512016, y: -0, z: -0, w: 0.8954709}
-  m_LocalPosition: {x: 8.55, y: 1.94, z: -0.8}
+  m_LocalRotation: {x: -0.13954982, y: -0, z: -0, w: 0.99021506}
+  m_LocalPosition: {x: 8.55, y: 1.94, z: 0}
   m_LocalScale: {x: 0.08179385, y: 0.08179385, z: 0.08179385}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1021014888}
-  m_LocalEulerAnglesHint: {x: -52.862, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -16.044, y: 0, z: 0}
 --- !u!212 &914639804
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -753,7 +757,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 99
   m_Sprite: {fileID: 21300000, guid: c3d0b2050f87c294c9e9d2c38a625283, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -777,7 +781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c8a5cd99749634e8f1a5ab979c3d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 16
+  moveSpeed: 21
   targetReachDistance: 0.15
   movementArea: {fileID: 2100000002}
 --- !u!61 &914639806
@@ -864,13 +868,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b8fdb1f84442c390e21bdb139c3354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireSprite: {fileID: 21300000, guid: 28fb5d10a449d6e49be655db5a5baae1, type: 3}
+  fireSprite: {fileID: 21300000, guid: 9e65a60c956e7144ab627464e8862856, type: 3}
   fireColor: {r: 1, g: 1, b: 1, a: 1}
-  sortingOrder: 0
-  width: 0.1
-  minimumLength: 0.1
-  maximumLength: 0.1
-  distanceBehindObject: 0.1
+  sortingOrder: 40
+  width: 0.2
+  minimumLength: 0.04
+  maximumLength: 0.04
+  distanceBehindObject: 0.47
   lengthResponse: 10
   pulseAmount: 0.12
   pulseSpeed: 12
@@ -922,6 +926,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!61 &948331446
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1193,6 +1201,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!1 &952299298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,7 +1301,7 @@ Transform:
   m_GameObject: {fileID: 1020948288}
   serializedVersion: 2
   m_LocalRotation: {x: -0.44151422, y: -0, z: -0, w: 0.8972543}
-  m_LocalPosition: {x: -1.82, y: -2.77, z: 0}
+  m_LocalPosition: {x: 2.69, y: 0.07, z: 0}
   m_LocalScale: {x: 0.1716399, y: 0.1716399, z: 0.1716399}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1420,6 +1432,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!1 &1021014887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,6 +1496,7 @@ MonoBehaviour:
   groundBlur: {fileID: 1650288747}
   bgmSource: {fileID: 0}
   successSoundSource: {fileID: 0}
+  countdownSoundSource: {fileID: 0}
   successEndingRoot: {fileID: 0}
   timeoutEndingRoot: {fileID: 0}
   endingAnimator: {fileID: 0}
@@ -1642,6 +1659,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!61 &1237986079
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1831,13 +1852,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300923923}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.12, y: 0.62, z: 0}
+  m_LocalRotation: {x: -0.0001531693, y: -0.00014379824, z: 0.0021179272, w: 0.99999774}
+  m_LocalPosition: {x: 0.12, y: 0.62, z: -2.7818206e-10}
   m_LocalScale: {x: 2.1, y: 1.3719891, z: 2.0200076}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.018, y: -0.017, z: 0.243}
 --- !u!1 &1309921393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1960,6 +1981,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!61 &1409539146
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2119,6 +2144,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!61 &1555054464
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2309,13 +2338,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650288744}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.002750001, y: -0, z: -0, w: 0.99999624}
   m_LocalPosition: {x: 0.04, y: 0, z: 0}
   m_LocalScale: {x: 1.137084, y: 0.5804813, z: 0.2866574}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1021014888}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.315, y: 0, z: 0}
 --- !u!114 &1650288747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2381,6 +2410,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 0}
+  breakSound: {fileID: 0}
+  soundVolume: 1
 --- !u!61 &1752273489
 BoxCollider2D:
   m_ObjectHideFlags: 0

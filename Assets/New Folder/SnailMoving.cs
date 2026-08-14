@@ -43,7 +43,7 @@ public class RandomSnailMove : MonoBehaviour
             transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
 
-    public void DestroyByObject1()
+   /*public void DestroyByObject1()
     {
         if (destroyed)
         {
@@ -54,6 +54,7 @@ public class RandomSnailMove : MonoBehaviour
         StartMenuController.Instance?.Object2Destroyed();
         gameObject.SetActive(false);
     }
+*/
 
     private void OnTriggerEnter2D(Collider2D other)
     {
