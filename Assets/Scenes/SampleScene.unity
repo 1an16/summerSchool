@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 660284242}
   - component: {fileID: 660284241}
   - component: {fileID: 660284243}
+  - component: {fileID: 660284244}
   m_Layer: 0
   m_Name: Object3 (1)
   m_TagString: Destory
@@ -500,6 +501,31 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
+--- !u!95 &660284244
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660284239}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6c65f5385d1ef8a44b788729488a4f8e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &821831985
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,6 +913,7 @@ GameObject:
   - component: {fileID: 949157300}
   - component: {fileID: 949157299}
   - component: {fileID: 949157301}
+  - component: {fileID: 949157302}
   m_Layer: 0
   m_Name: Object3 (3)
   m_TagString: Destory
@@ -1034,6 +1061,31 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
+--- !u!95 &949157302
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949157297}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: df8b7ba70d65c114eb952cf5492bdc07, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &952299298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1166,7 @@ GameObject:
   - component: {fileID: 1020948291}
   - component: {fileID: 1020948290}
   - component: {fileID: 1020948292}
+  - component: {fileID: 1020948293}
   m_Layer: 0
   m_Name: Object3 (2)
   m_TagString: Destory
@@ -1261,6 +1314,31 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
+--- !u!95 &1020948293
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020948288}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 15905598ffc62ec499c662caa21c61bf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1021014887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1426,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f8381dfedc9426944bfa010837f81aab, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.498
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1451,7 +1529,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 2.49
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -1717,6 +1795,7 @@ GameObject:
   - component: {fileID: 1409539147}
   - component: {fileID: 1409539146}
   - component: {fileID: 1409539145}
+  - component: {fileID: 1409539149}
   m_Layer: 0
   m_Name: Object3 (8)
   m_TagString: Destory
@@ -1752,6 +1831,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
 --- !u!61 &1409539146
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1864,6 +1947,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1409539149
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409539144}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e7fb895ca97412d43bf126d60b28190c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1650288744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1979,6 +2083,7 @@ GameObject:
   - component: {fileID: 1752273490}
   - component: {fileID: 1752273489}
   - component: {fileID: 1752273488}
+  - component: {fileID: 1752273492}
   m_Layer: 0
   m_Name: Object3 (6)
   m_TagString: Destory
@@ -2014,6 +2119,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
 --- !u!61 &1752273489
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2126,6 +2235,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1752273492
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752273487}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 50093c5943a45414faba38c3452c2655, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1933693572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2138,6 +2268,7 @@ GameObject:
   - component: {fileID: 1933693575}
   - component: {fileID: 1933693574}
   - component: {fileID: 1933693576}
+  - component: {fileID: 1933693577}
   m_Layer: 0
   m_Name: Object3 (5)
   m_TagString: Destory
@@ -2153,13 +2284,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933693572}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.12329328, w: 0.9923703}
   m_LocalPosition: {x: -6.39, y: -1.65, z: 0}
   m_LocalScale: {x: 0.11495858, y: 0.11495858, z: 0.11495858}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 14.164}
 --- !u!61 &1933693574
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2285,6 +2416,31 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
+--- !u!95 &1933693577
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933693572}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7d824446fbb14354381810ee337a7ffd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1939008552
 GameObject:
   m_ObjectHideFlags: 0
@@ -2381,6 +2537,7 @@ GameObject:
   - component: {fileID: 2042351671}
   - component: {fileID: 2042351670}
   - component: {fileID: 2042351672}
+  - component: {fileID: 2042351673}
   m_Layer: 0
   m_Name: Object3 (4)
   m_TagString: Destory
@@ -2528,6 +2685,31 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
+--- !u!95 &2042351673
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042351668}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c8b89dd3103ddc743a09d907f761f29e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2075647879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,6 +2722,7 @@ GameObject:
   - component: {fileID: 2075647882}
   - component: {fileID: 2075647881}
   - component: {fileID: 2075647880}
+  - component: {fileID: 2075647884}
   m_Layer: 0
   m_Name: Object3 (7)
   m_TagString: Destory
@@ -2575,6 +2758,10 @@ MonoBehaviour:
   onBroken:
     m_PersistentCalls:
       m_Calls: []
+  audioSource: {fileID: 0}
+  crackSound: {fileID: 8300000, guid: 94a92b9537ea31a4fb2b76ced6292f17, type: 3}
+  breakSound: {fileID: 8300000, guid: 6cb4fda989058944289850949cebed6a, type: 3}
+  soundVolume: 1
 --- !u!61 &2075647881
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2687,6 +2874,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2075647884
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075647879}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eb6b69a7c0c233d47955393724317513, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2100000000
 GameObject:
   m_ObjectHideFlags: 0

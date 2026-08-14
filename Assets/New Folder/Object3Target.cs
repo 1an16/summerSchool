@@ -18,6 +18,12 @@ public class Object3Target : MonoBehaviour
     [SerializeField] private UnityEvent onHit;
     [SerializeField] private UnityEvent onBroken;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip crackSound;
+    [SerializeField] private AudioClip breakSound;
+    [SerializeField, Range(0f, 1f)] private float soundVolume = 1f;
+
     private int hitCount;
     private float nextAllowedHitTime;
     private bool broken;
@@ -71,15 +77,20 @@ public class Object3Target : MonoBehaviour
         {
             Break();
         }
-        else if (spriteRenderer != null && damagedSprite != null)
+        else
         {
-            spriteRenderer.sprite = damagedSprite;
+            if (spriteRenderer != null && damagedSprite != null)
+            {
+                spriteRenderer.sprite = damagedSprite;
+            }
+            PlaySound(crackSound);
         }
     }
 
     private void Break()
     {
         broken = true;
+        PlaySound(breakSound);
         if (spriteRenderer != null && brokenSprite != null)
         {
             spriteRenderer.sprite = brokenSprite;
@@ -106,5 +117,22 @@ public class Object3Target : MonoBehaviour
     {
         yield return new WaitForSeconds(destroyDelay);
         gameObject.SetActive(false);
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (clip == null)
+        {
+            return;
+        }
+
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(clip, soundVolume);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(clip, transform.position, soundVolume);
+        }
     }
 }
