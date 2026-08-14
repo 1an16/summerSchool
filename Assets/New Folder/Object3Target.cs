@@ -67,6 +67,8 @@ public class Object3Target : MonoBehaviour
         nextAllowedHitTime = Time.time + hitCooldown;
         hitCount++;
         onHit?.Invoke();
+        CameraShake.Instance?.Shake();
+        StartMenuController.Instance?.ApplyHitPenalty();
 
         if (animator != null && !string.IsNullOrEmpty(hitTrigger))
         {

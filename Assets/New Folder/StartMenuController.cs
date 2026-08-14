@@ -36,6 +36,8 @@ public class StartMenuController : MonoBehaviour
 
     [Header("Game Rules")]
     [SerializeField, Min(1f)] private float gameDuration = 30f;
+    [SerializeField, Min(0f)] private float hitPenalty = 2f;
+    [SerializeField, Min(0.1f)] private float penaltyFlashDuration = 1f;
     [SerializeField] private GroundBlurController groundBlur;
 
     [Header("Audio")]
@@ -58,6 +60,7 @@ public class StartMenuController : MonoBehaviour
 
     private float menuHeldTime;
     private float remainingTime;
+    private float penaltyFlashTimer;
     private bool transitionStarted;
     private string fallbackCountdown = string.Empty;
 
@@ -120,6 +123,10 @@ public class StartMenuController : MonoBehaviour
         else if (Phase == GamePhase.Playing)
         {
             remainingTime = Mathf.Max(0f, remainingTime - Time.deltaTime);
+            if (penaltyFlashTimer > 0f)
+            {
+                penaltyFlashTimer -= Time.deltaTime;
+            }
             if (remainingTime <= 0f)
             {
                 EndGame(false);
@@ -129,7 +136,11 @@ public class StartMenuController : MonoBehaviour
 
     private void OnGUI()
     {
-        if (Phase == GamePhase.Countdown && countdownText == null && !string.IsNullOrEmpty(fallbackCountdown))
+        if (Phase == GamePhase.Playing)
+        {
+            DrawTimerLabel(Mathf.CeilToInt(remainingTime).ToString());
+        }
+        else if (Phase == GamePhase.Countdown && countdownText == null && !string.IsNullOrEmpty(fallbackCountdown))
         {
             DrawCenteredLabel(fallbackCountdown, Mathf.RoundToInt(Screen.height * 0.18f));
         }
@@ -148,6 +159,15 @@ public class StartMenuController : MonoBehaviour
         if (IsPlaying)
         {
             EndGame(true);
+        }
+    }
+
+    public void ApplyHitPenalty()
+    {
+        if (IsPlaying)
+        {
+            remainingTime = Mathf.Max(0f, remainingTime - hitPenalty);
+            penaltyFlashTimer = penaltyFlashDuration;
         }
     }
 
@@ -316,5 +336,24 @@ public class StartMenuController : MonoBehaviour
         };
         style.normal.textColor = Color.white;
         GUI.Label(new Rect(0f, 0f, Screen.width, Screen.height), text, style);
+    }
+
+    private void DrawTimerLabel(string text)
+    {
+        int fontSize = Mathf.RoundToInt(Screen.height * 0.06f);
+        GUIStyle style = new GUIStyle(GUI.skin.label)
+        {
+            alignment = TextAnchor.UpperRight,
+            fontSize = Mathf.Max(24, fontSize),
+            fontStyle = FontStyle.Bold
+        };
+        style.normal.textColor = penaltyFlashTimer > 0f ? Color.red : Color.white;
+        float margin = Screen.width * 0.03f;
+        Rect rect = new Rect(
+            Screen.width * 0.6f,
+            margin,
+            Screen.width * 0.4f - margin,
+            fontSize * 2.5f);
+        GUI.Label(rect, text, style);
     }
 }
