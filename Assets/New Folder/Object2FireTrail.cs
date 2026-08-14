@@ -44,6 +44,8 @@ public class Object2FireTrail : MonoBehaviour
         {
             return;
         }
+//让他们给竖直向上的素材
+//有一个distance参数可以改fire和牛之间的距离
 
         Vector2 displacement = transform.position - previousPosition;
         previousPosition = transform.position;

@@ -1068,29 +1068,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 14.02794, y: 11.489663}
   m_EdgeRadius: 0
---- !u!114 &914639808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 914639802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68b8fdb1f84442c390e21bdb139c3354, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  fireSprite: {fileID: 21300000, guid: f4db39f69af9b12429075a8b7924bbef, type: 3}
-  fireColor: {r: 1, g: 1, b: 1, a: 1}
-  sortingOrder: 0
-  width: 0.45
-  minimumLength: 0.45
-  maximumLength: 1.15
-  distanceBehindObject: 0.35
-  lengthResponse: 10
-  pulseAmount: 0.12
-  pulseSpeed: 12
-  directionSmoothness: 14
 --- !u!50 &914639807
 Rigidbody2D:
   serializedVersion: 4
@@ -1118,6 +1095,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &914639808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914639802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b8fdb1f84442c390e21bdb139c3354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireSprite: {fileID: 21300000, guid: f4db39f69af9b12429075a8b7924bbef, type: 3}
+  fireColor: {r: 1, g: 1, b: 1, a: 1}
+  sortingOrder: 0
+  width: 0.45
+  minimumLength: 0.45
+  maximumLength: 1.15
+  distanceBehindObject: 0.35
+  lengthResponse: 10
+  pulseAmount: 0.12
+  pulseSpeed: 12
+  directionSmoothness: 14
 --- !u!1 &949157297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,13 +1555,15 @@ MonoBehaviour:
   startMenuRoot: {fileID: 0}
   holdProgressFill: {fileID: 0}
   menuHoldDuration: 1
-  controlKey: 331
+  controlKey: 32
   countdownRoot: {fileID: 0}
   countdownText: {fileID: 0}
   countdownFrom: 3
   countdownStepSeconds: 1
   gameDuration: 30
   groundBlur: {fileID: 1650288747}
+  bgmSource: {fileID: 0}
+  successSoundSource: {fileID: 0}
   successEndingRoot: {fileID: 0}
   timeoutEndingRoot: {fileID: 0}
   endingAnimator: {fileID: 0}
