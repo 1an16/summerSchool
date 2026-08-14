@@ -41,6 +41,7 @@ public class StartMenuController : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource successSoundSource;
+    [SerializeField] private AudioSource countdownSoundSource;
 
     [Header("Ending")]
     [SerializeField] private GameObject successEndingRoot;
@@ -188,6 +189,11 @@ public class StartMenuController : MonoBehaviour
 
         yield return null;
         Phase = GamePhase.Countdown;
+
+        if (countdownSoundSource != null)
+        {
+            countdownSoundSource.Play();
+        }
 
         for (int value = countdownFrom; value >= 1; value--)
         {
