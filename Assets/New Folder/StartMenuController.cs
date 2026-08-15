@@ -141,6 +141,14 @@ public class StartMenuController : MonoBehaviour
                 EndGame(false);
             }
         }
+        else if (Phase == GamePhase.Timeout)
+        {
+            if (Input.GetKeyDown(controlKey))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
     }
 
     private void OnGUI()
@@ -157,9 +165,13 @@ public class StartMenuController : MonoBehaviour
         {
             DrawCenteredLabel("SUCCESS", Mathf.RoundToInt(Screen.height * 0.1f));
         }
-        else if (Phase == GamePhase.Timeout && timeoutEndingRoot == null)
+        else if (Phase == GamePhase.Timeout)
         {
-            DrawCenteredLabel("TIME UP", Mathf.RoundToInt(Screen.height * 0.1f));
+            if (timeoutEndingRoot == null)
+            {
+                DrawCenteredLabel("TIME UP", Mathf.RoundToInt(Screen.height * 0.1f), Color.red);
+            }
+            DrawCenteredLabel($"Press {controlKey} to Restart", Mathf.RoundToInt(Screen.height * 0.04f), Color.white, Screen.height * 0.15f);
         }
     }
 
@@ -343,7 +355,7 @@ public class StartMenuController : MonoBehaviour
         }
     }
 
-    private static void DrawCenteredLabel(string text, int fontSize)
+    private static void DrawCenteredLabel(string text, int fontSize, Color color, float yOffset = 0f)
     {
         GUIStyle style = new GUIStyle(GUI.skin.label)
         {
@@ -351,8 +363,14 @@ public class StartMenuController : MonoBehaviour
             fontSize = Mathf.Max(32, fontSize),
             fontStyle = FontStyle.Bold
         };
-        style.normal.textColor = Color.white;
-        GUI.Label(new Rect(0f, 0f, Screen.width, Screen.height), text, style);
+        style.normal.textColor = color;
+        Rect rect = new Rect(0f, yOffset, Screen.width, Screen.height);
+        GUI.Label(rect, text, style);
+    }
+
+    private static void DrawCenteredLabel(string text, int fontSize)
+    {
+        DrawCenteredLabel(text, fontSize, Color.white, 0f);
     }
 
     private void DrawTimerLabel(string text)
