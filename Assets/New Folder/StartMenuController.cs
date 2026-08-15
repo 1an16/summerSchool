@@ -38,6 +38,7 @@ public class StartMenuController : MonoBehaviour
     [SerializeField, Min(1f)] private float gameDuration = 30f;
     [SerializeField, Min(0f)] private float hitPenalty = 2f;
     [SerializeField, Min(0.1f)] private float penaltyFlashDuration = 1f;
+    [SerializeField, Min(0f)] private float hitStopDuration = 0.08f;
     [SerializeField] private GroundBlurController groundBlur;
 
     [Header("Audio")]
@@ -61,6 +62,7 @@ public class StartMenuController : MonoBehaviour
     private float menuHeldTime;
     private float remainingTime;
     private float penaltyFlashTimer;
+    private float hitStopTimer;
     private bool transitionStarted;
     private string fallbackCountdown = string.Empty;
 
@@ -122,6 +124,13 @@ public class StartMenuController : MonoBehaviour
         }
         else if (Phase == GamePhase.Playing)
         {
+            if (hitStopTimer > 0f)
+            {
+                hitStopTimer -= Time.unscaledDeltaTime;
+                Time.timeScale = 0f;
+                return;
+            }
+            Time.timeScale = 1f;
             remainingTime = Mathf.Max(0f, remainingTime - Time.deltaTime);
             if (penaltyFlashTimer > 0f)
             {
@@ -168,6 +177,14 @@ public class StartMenuController : MonoBehaviour
         {
             remainingTime = Mathf.Max(0f, remainingTime - hitPenalty);
             penaltyFlashTimer = penaltyFlashDuration;
+        }
+    }
+
+    public void TriggerHitStop()
+    {
+        if (IsPlaying)
+        {
+            hitStopTimer = hitStopDuration;
         }
     }
 
