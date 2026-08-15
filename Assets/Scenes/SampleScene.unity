@@ -1610,7 +1610,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 23.603092, y: 16.4}
+    oldSize: {x: 27.324455, y: 20.48}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1660,7 +1660,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: f592cb6ab50b39b468f49bd291a8d3a9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 15142c43d9b261748a16db9a3689f1b7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1686,10 +1686,10 @@ MonoBehaviour:
   hitsToBreak: 2
   hitCooldown: 0.15
   spriteRenderer: {fileID: 0}
-  untouchedSprite: {fileID: 0}
-  damagedSprite: {fileID: 21300000, guid: 42655986e7ec8c643a63b16bdae6631f, type: 3}
-  brokenSprite: {fileID: 21300000, guid: f90c502a09ba1f748b92dc53d6ef8696, type: 3}
-  animator: {fileID: 0}
+  untouchedSprite: {fileID: 21300000, guid: 15142c43d9b261748a16db9a3689f1b7, type: 3}
+  damagedSprite: {fileID: 21300000, guid: f46d32d11b9651c42927700fab457aff, type: 3}
+  brokenSprite: {fileID: 21300000, guid: 253575256a6f42a49abeb102c607f57a, type: 3}
+  animator: {fileID: 1020948293}
   hitTrigger: Hit
   breakTrigger: Break
   destroyDelay: 0

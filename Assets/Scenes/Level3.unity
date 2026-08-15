@@ -1810,7 +1810,7 @@ MonoBehaviour:
   startMenuRoot: {fileID: 0}
   holdProgressFill: {fileID: 0}
   menuHoldDuration: 1
-  controlKey: 331
+  controlKey: 32
   countdownRoot: {fileID: 0}
   countdownText: {fileID: 0}
   countdownFrom: 3

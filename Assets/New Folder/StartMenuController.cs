@@ -12,7 +12,8 @@ public enum GamePhase
     Countdown,
     Playing,
     Success,
-    Timeout
+    Timeout,
+    GameComplete
 }
 
 /// <summary>Owns the complete game flow. There must be exactly one in the scene.</summary>
@@ -149,6 +150,14 @@ public class StartMenuController : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        else if (Phase == GamePhase.GameComplete)
+        {
+            if (Input.GetKeyDown(controlKey))
+            {
+                Time.timeScale = 1f;
+                SceneManager.LoadScene(0);
+            }
+        }
     }
 
     private void OnGUI()
@@ -170,6 +179,14 @@ public class StartMenuController : MonoBehaviour
             if (timeoutEndingRoot == null)
             {
                 DrawCenteredLabel("TIME UP", Mathf.RoundToInt(Screen.height * 0.1f), Color.red);
+            }
+            DrawCenteredLabel($"Press {controlKey} to Restart", Mathf.RoundToInt(Screen.height * 0.04f), Color.white, Screen.height * 0.15f);
+        }
+        else if (Phase == GamePhase.GameComplete)
+        {
+            if (successEndingRoot == null)
+            {
+                DrawCenteredLabel("ALL CLEAR!", Mathf.RoundToInt(Screen.height * 0.1f), Color.yellow);
             }
             DrawCenteredLabel($"Press {controlKey} to Restart", Mathf.RoundToInt(Screen.height * 0.04f), Color.white, Screen.height * 0.15f);
         }
@@ -310,6 +327,8 @@ public class StartMenuController : MonoBehaviour
         int nextBuildIndex = SceneManager.GetActiveScene().buildIndex + 1;
         if (nextBuildIndex >= SceneManager.sceneCountInBuildSettings)
         {
+            yield return new WaitForSecondsRealtime(nextLevelDelay);
+            Phase = GamePhase.GameComplete;
             yield break;
         }
 
