@@ -69,6 +69,7 @@ public class Object3Target : MonoBehaviour
         onHit?.Invoke();
         CameraShake.Instance?.Shake();
         StartMenuController.Instance?.ApplyHitPenalty();
+        StartMenuController.Instance?.TriggerHitStop();
 
         if (animator != null && !string.IsNullOrEmpty(hitTrigger))
         {
