@@ -51,6 +51,7 @@ public class RandomSnailMove : MonoBehaviour
         }
 
         destroyed = true;
+        ParticleEffects.SpawnSnailDestroy(transform.position);
         StartMenuController.Instance?.Object2Destroyed();
         gameObject.SetActive(false);
     }

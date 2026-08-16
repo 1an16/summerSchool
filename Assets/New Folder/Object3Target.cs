@@ -94,6 +94,8 @@ public class Object3Target : MonoBehaviour
     {
         broken = true;
         PlaySound(breakSound);
+        ParticleEffects.SpawnBottleBreak(transform.position,
+            spriteRenderer != null ? spriteRenderer.color : Color.white);
         if (spriteRenderer != null && brokenSprite != null)
         {
             spriteRenderer.sprite = brokenSprite;

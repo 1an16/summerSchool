@@ -41,6 +41,12 @@ public class StartMenuController : MonoBehaviour
     [SerializeField, Min(0f)] private float hitStopDuration = 0.08f;
     [SerializeField] private GroundBlurController groundBlur;
 
+    [Header("Low Time Warning")]
+    [SerializeField, Min(1f)] private float lowTimeThreshold = 5f;
+    [SerializeField] private AudioSource warningSoundSource;
+    [SerializeField] private AudioClip warningBeep;
+    [SerializeField, Range(0f, 1f)] private float warningBeepVolume = 0.5f;
+
     [Header("Audio")]
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioSource successSoundSource;
@@ -64,6 +70,7 @@ public class StartMenuController : MonoBehaviour
     private float penaltyFlashTimer;
     private float hitStopTimer;
     private bool transitionStarted;
+    private int lastWarningSecond = -1;
     private string fallbackCountdown = string.Empty;
 
     public GamePhase Phase { get; private set; } = GamePhase.StartMenu;
@@ -135,6 +142,15 @@ public class StartMenuController : MonoBehaviour
             if (penaltyFlashTimer > 0f)
             {
                 penaltyFlashTimer -= Time.deltaTime;
+            }
+            if (remainingTime <= lowTimeThreshold && remainingTime > 0f)
+            {
+                int currentSecond = Mathf.CeilToInt(remainingTime);
+                if (currentSecond != lastWarningSecond)
+                {
+                    lastWarningSecond = currentSecond;
+                    PlayWarningBeep();
+                }
             }
             if (remainingTime <= 0f)
             {
@@ -264,6 +280,7 @@ public class StartMenuController : MonoBehaviour
 
         SetActive(countdownRoot, false);
         remainingTime = gameDuration;
+        lastWarningSecond = -1;
         groundBlur?.ResetBlur();
         Time.timeScale = 1f;
         Phase = GamePhase.Playing;
@@ -280,6 +297,10 @@ public class StartMenuController : MonoBehaviour
         if (bgmSource != null && bgmSource.isPlaying)
         {
             bgmSource.Stop();
+        }
+        if (warningSoundSource != null && warningSoundSource.isPlaying)
+        {
+            warningSoundSource.Stop();
         }
         if (success && successSoundSource != null)
         {
@@ -376,13 +397,27 @@ public class StartMenuController : MonoBehaviour
     private void DrawTimerLabel(string text)
     {
         int fontSize = Mathf.RoundToInt(Screen.height * 0.06f);
+        bool lowTime = remainingTime <= lowTimeThreshold && remainingTime > 0f;
+        if (lowTime)
+        {
+            float pulse = 1f + Mathf.Sin(Time.unscaledTime * 8f) * 0.15f;
+            fontSize = Mathf.RoundToInt(fontSize * pulse);
+        }
         GUIStyle style = new GUIStyle(GUI.skin.label)
         {
             alignment = TextAnchor.UpperRight,
             fontSize = Mathf.Max(24, fontSize),
             fontStyle = FontStyle.Bold
         };
-        style.normal.textColor = penaltyFlashTimer > 0f ? Color.red : Color.white;
+        if (lowTime)
+        {
+            float blink = Mathf.Repeat(Time.unscaledTime, 0.5f);
+            style.normal.textColor = blink < 0.25f ? Color.red : new Color(0.6f, 0f, 0f);
+        }
+        else
+        {
+            style.normal.textColor = penaltyFlashTimer > 0f ? Color.red : Color.white;
+        }
         float margin = Screen.width * 0.03f;
         Rect rect = new Rect(
             Screen.width * 0.6f,
@@ -390,5 +425,22 @@ public class StartMenuController : MonoBehaviour
             Screen.width * 0.4f - margin,
             fontSize * 2.5f);
         GUI.Label(rect, text, style);
+    }
+
+    private void PlayWarningBeep()
+    {
+        if (warningBeep == null)
+        {
+            return;
+        }
+
+        if (warningSoundSource != null)
+        {
+            warningSoundSource.PlayOneShot(warningBeep, warningBeepVolume);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(warningBeep, transform.position, warningBeepVolume);
+        }
     }
 }
